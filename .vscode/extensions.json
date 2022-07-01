@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "hashicorp.terraform",
+        "arrterian.nix-env-selector",
+        "brettm12345.nixfmt-vscode"
+    ]
+}
