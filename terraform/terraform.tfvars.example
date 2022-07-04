@@ -1,0 +1,3 @@
+cloudflare_api_token      = <cloudflare-api-token>
+digitalocean_access_token = <digitalocean-access-token>
+domain                    = <domain>

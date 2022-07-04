@@ -2,6 +2,7 @@
     "recommendations": [
         "hashicorp.terraform",
         "arrterian.nix-env-selector",
-        "brettm12345.nixfmt-vscode"
+        "brettm12345.nixfmt-vscode",
+        "skellock.just"
     ]
 }
