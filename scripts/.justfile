@@ -5,8 +5,8 @@ help:
   @just --list
 
 init:
-  ./scripts/create-root-ssh-token-and-upload-to-provider.sh
-  ./scripts/generate-tfvars.sh
+  ./scripts/create-root-ssh-token-and-upload-to-provider
+  ./scripts/generate-tfvars
 
 validate:
-  shellcheck -x *.sh
+  shellcheck -x *

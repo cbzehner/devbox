@@ -33,7 +33,6 @@ __ssh_config="
 Host $DOMAIN
   User root
   AddKeysToAgent yes
-  UseKeychain yes
   IdentityFile $private_key_path
 "
 

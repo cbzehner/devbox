@@ -1,0 +1,35 @@
+#!/bin/bash
+set -uo errexit
+
+echo "Deploying NixOS..."
+
+project_root=$(git rev-parse --show-toplevel)
+if [ -z "$project_root" ]; then
+    echo "project_root is not set. are you working outside a git repo?"
+    exit 1
+fi
+
+# Source environment variables from dotfiles
+source "$project_root/.env"
+source "$project_root/.env.local"
+
+USER="root"
+remote="$USER@$DOMAIN"
+
+rsync --recursive --delete --filter='P hardware-configuration.nix' --filter='P networking.nix' --exclude='.*' --progress \
+    "$project_root/nixos/" \
+    "$remote":/etc/nixos/
+# rsync \
+#     --recursive \                                                           # Sync the NixOS directory and all subfolders
+#     --delete \                                                              # Clean-up files found on the remote that are not present on the host
+#     --filter='P hardware-configuration.nix' --filter='P networking.nix' \   # Avoid changes to provider-specific nix files
+#     --exclude='.*' \                                                        # Skip dotfiles
+#     --progress \                                                            # Show progress
+#     "$project_root/nixos/" \                                                # Host
+#     root@"$DOMAIN":/etc/nixos/                                              # Remote
+
+ssh "$remote" "mv /etc/nixos/machine.nix /etc/nixos/configuration.nix"
+ssh "$remote" "nixos-rebuild build"
+ssh "$remote" "nixos-rebuild switch"
+
+echo "Deploy complete."
