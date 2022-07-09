@@ -13,7 +13,7 @@ variable "cloudflare_zone_id" {
 
 variable "domain" {}
 
-resource "cloudflare_record" "apex_record" {
+resource "cloudflare_record" "apex" {
   zone_id = var.cloudflare_zone_id
   name    = "@" # root record signifier
   value   = digitalocean_droplet.production.ipv4_address
@@ -21,18 +21,18 @@ resource "cloudflare_record" "apex_record" {
   proxied = false # proxy prevents ssh access
 }
 
-resource "cloudflare_record" "internal" {
+resource "cloudflare_record" "apex-www" {
   zone_id = var.cloudflare_zone_id
-  name    = "internal"
+  name    = "www"
   value   = var.domain
   type    = "CNAME"
-  proxied = true
+  proxied = false
 }
 
-resource "cloudflare_record" "development" {
+resource "cloudflare_record" "wildcard" {
   zone_id = var.cloudflare_zone_id
-  name    = "*.dev"
+  name    = "*"
   value   = var.domain
   type    = "CNAME"
-  proxied = true
+  proxied = false
 }

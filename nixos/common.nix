@@ -14,6 +14,8 @@
   nixpkgs.config.allowUnfree = true;
 
   nix = {
+    # TODO: Automate user controls
+    allowedUsers = [ "cbzehner" "root" ];
     gc = {
       automatic = true;
       dates = "weekly";
@@ -47,18 +49,6 @@
     }];
   };
 
-  networking = {
-    firewall = {
-      allowedTCPPorts = [ 22 80 443 ];
-
-      # mosh
-      allowedUDPPortRanges = [{
-        from = 60000;
-        to = 61000;
-      }];
-    };
-  };
-
   environment.systemPackages = with pkgs; [ mosh ];
 
   services = {
@@ -68,6 +58,7 @@
       bantime-increment.enable = true;
     };
 
+    # Consider switching from SSH to Tailscale. See "VPN for Access" at https://xeiaso.net/blog/paranoid-nixos-2021-07-18
     openssh = {
       enable = true;
       permitRootLogin = "no"; # Disable all logins by the "root" user account.

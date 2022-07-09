@@ -9,10 +9,11 @@ pkgs.mkShell {
     pkgs.fzf
     pkgs.git
     pkgs.just
-    pkgs.rsync
+    pkgs.mosh
     pkgs.nixfmt
     pkgs.openssh
     pkgs.ripgrep
+    pkgs.rsync
     pkgs.shellcheck
     pkgs.terraform
   ];

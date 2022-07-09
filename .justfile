@@ -19,7 +19,7 @@ scripts COMMAND:
 user := env_var_or_default("USER", "root")
 connect:
   @echo "connecting to $DOMAIN production instance..."
-  @ssh {{user}}@"$DOMAIN"
+  @mosh {{user}}@"$DOMAIN"
 
 deploy:
   @just nix deploy
