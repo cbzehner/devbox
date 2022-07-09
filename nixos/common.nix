@@ -70,7 +70,7 @@
 
     openssh = {
       enable = true;
-      # permitRootLogin = "no"; # Disable all logins by the "root" user account.
+      permitRootLogin = "no"; # Disable all logins by the "root" user account.
       passwordAuthentication = false;
     };
   };

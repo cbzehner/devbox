@@ -1,6 +1,13 @@
 # devbox
 Personalized development environment
 
+## Getting Started
+
+1. Add the domain of your project to the `DOMAIN` environment variable in `.env`.
+1. Copy `.env.local.example` to `.env.local`, then add values for `CLOUDFLARE_API_TOKEN` and `DIGITALOCEAN_ACCESS_TOKEN`.
+1. Install Nix on your machine and then run `nix-shell` from within this repository to enter a nix shell.
+1. Comment out `permitRootLogin = "no";` in `nixos/common.nix` and run `just init` to provision the infrastructure.
+
 ## Terraform
 
 ### DNS
