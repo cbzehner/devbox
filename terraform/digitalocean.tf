@@ -6,7 +6,7 @@ provider "digitalocean" {
   token = var.digitalocean_access_token
 }
 
-resource "digitalocean_droplet" "droplet" {
+resource "digitalocean_droplet" "production" {
   image     = "debian-11-x64"
   name      = var.domain
   region    = "nyc3"

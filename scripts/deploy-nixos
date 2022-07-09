@@ -1,7 +1,21 @@
 #!/bin/bash
 set -uo errexit
 
-echo "Deploying NixOS..."
+if [ $# -eq 0 ]; then
+    INITIALIZE=0
+else
+    if [ "$1" == "--init" ]; then
+        INITIALIZE=1
+    else
+        INITIALIZE=0
+    fi
+fi
+
+if [ "$INITIALIZE" -eq 1 ]; then
+    echo "Deploying initial NixOS configuration..."
+else
+    echo "Deploying NixOS configuration..."
+fi
 
 project_root=$(git rev-parse --show-toplevel)
 if [ -z "$project_root" ]; then
@@ -13,23 +27,27 @@ fi
 source "$project_root/.env"
 source "$project_root/.env.local"
 
-USER="root"
+if [ "$INITIALIZE" -eq 1 ]; then
+    USER="root"
+else
+    USER=$USER # Set by external environment. Generally the name of the logged-in account.
+fi
 remote="$USER@$DOMAIN"
 
-rsync --recursive --delete --filter='P hardware-configuration.nix' --filter='P networking.nix' --exclude='.*' --progress \
-    "$project_root/nixos/" \
-    "$remote":/etc/nixos/
-# rsync \
-#     --recursive \                                                           # Sync the NixOS directory and all subfolders
-#     --delete \                                                              # Clean-up files found on the remote that are not present on the host
-#     --filter='P hardware-configuration.nix' --filter='P networking.nix' \   # Avoid changes to provider-specific nix files
-#     --exclude='.*' \                                                        # Skip dotfiles
-#     --progress \                                                            # Show progress
-#     "$project_root/nixos/" \                                                # Host
-#     root@"$DOMAIN":/etc/nixos/                                              # Remote
+if [ "$INITIALIZE" -eq 1 ]; then
+    rsync --recursive --delete --filter='P hardware-configuration.nix' --filter='P networking.nix' --exclude='.*' --progress \
+        "$project_root/nixos/" \
+        "$remote":/etc/nixos/
+    ssh "$remote" "mv /etc/nixos/production.nix /etc/nixos/configuration.nix"
+    ssh "$remote" "nixos-rebuild build"
+    ssh "$remote" "nixos-rebuild switch"
+else
+    rsync --recursive --delete --filter='P hardware-configuration.nix' --filter='P networking.nix' --exclude='.*' --progress --rsync-path="sudo rsync" \
+        "$project_root/nixos/" \
+        "$remote":/etc/nixos/
+    ssh "$remote" "sudo mv /etc/nixos/production.nix /etc/nixos/configuration.nix"
+    ssh "$remote" "sudo nixos-rebuild build"
+    ssh "$remote" "sudo nixos-rebuild switch"
+fi
 
-ssh "$remote" "mv /etc/nixos/machine.nix /etc/nixos/configuration.nix"
-ssh "$remote" "nixos-rebuild build"
-ssh "$remote" "nixos-rebuild switch"
-
-echo "Deploy complete."
+echo "Completed deployment."

@@ -1,4 +1,4 @@
-output "public_ip" {
-  description = "DigitalOcean droplet IP address"
-  value       = digitalocean_droplet.droplet.ipv4_address
+output "production_ip" {
+  description = "Production IP address"
+  value       = digitalocean_droplet.production.ipv4_address
 }

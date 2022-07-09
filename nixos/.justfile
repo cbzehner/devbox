@@ -7,7 +7,8 @@ help:
 deploy:
   ./../scripts/deploy-nixos
   
-# init:
-  
+init:
+  ./../scripts/deploy-nixos --init
+
 validate:
   nixfmt --check *.nix

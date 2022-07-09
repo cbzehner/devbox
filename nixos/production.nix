@@ -2,4 +2,6 @@
 
 { config, ... }: {
   imports = [ ./common.nix ];
+
+  networking.hostName = "production";
 }
