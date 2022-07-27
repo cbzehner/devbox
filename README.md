@@ -27,3 +27,6 @@ Set up a DNS record pointing `<username>.dev` to your infrastructure.
 ## Todo
 - [Paranoid NixOS Setup](https://xeiaso.net/blog/paranoid-nixos-2021-07-18)
 - Use Postgres as the backing database for Grafana
+- Package the Ory Suite (Kratos, Keto, Oathkeeper)
+- Setup analytics with Umami
+- [GitHub Actions CI](https://nixos.org/guides/continuous-integration-github-actions.html)

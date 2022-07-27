@@ -2,6 +2,7 @@
 
 let
   createUser = import ./template.nix;
+  serviceUsers = import ./service_users.nix;
   users = builtins.map (createUser) [{
     username = "cbzehner";
     fullName = "Chris Zehner";

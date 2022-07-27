@@ -1,12 +1,12 @@
 { config, pkgs, ... }: {
   imports = [
-    # Question: Does having both headless & hardened profiles active layer them? Or do they conflict / are they redundant?
     <nixpkgs/nixos/modules/profiles/headless.nix>
     <nixpkgs/nixos/modules/profiles/hardened.nix>
+    <nixpkgs/nixos/modules/profiles/minimal.nix>
     ./hardware-configuration.nix # provider specific hardware configuration
     ./networking.nix # generated at runtime by nixos-infect
-    ./users
     ./services
+    ./users
   ];
 
   boot.cleanTmpDir = true;
@@ -49,7 +49,7 @@
     }];
   };
 
-  environment.systemPackages = with pkgs; [ mosh ];
+  environment.systemPackages = with pkgs; [ helix mosh neovim ];
 
   services = {
     # Host  services
